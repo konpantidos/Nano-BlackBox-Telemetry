@@ -1,0 +1,17 @@
+# Arduino IDE generated files
+*.hex
+*.elf
+*.bin
+*.eep
+*.d
+*.lst
+*.map
+*.sym
+*.o
+*.a
+*.obj
+build/
+local.properties
+
+# MacOS junk
+.DS_Store

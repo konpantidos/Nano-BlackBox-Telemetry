@@ -34,6 +34,7 @@ This folder contains the electrical schematics and simulation files for the Flig
 due to lack of sensor in Wokwi Library)
 You can run the live simulation of this circuit on Wokwi here:
 https://wokwi.com/projects/455776933446111233
+![Circuit Layout](wokwi_circuit_layout.png)
 
 ## Files
 * `wokwi_diagram.json`: The simulation source file.

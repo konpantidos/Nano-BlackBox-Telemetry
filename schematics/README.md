@@ -31,7 +31,7 @@ This folder contains the electrical schematics and simulation files for the Flig
 
 ## Simulation
 You can run the live simulation of this circuit on Wokwi here:
-
+https://wokwi.com/projects/455776933446111233
 
 ## Files
 * `wokwi_diagram.json`: The simulation source file.

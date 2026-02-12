@@ -30,7 +30,8 @@ This folder contains the electrical schematics and simulation files for the Flig
 | SCK        | D13         | Clock       |
 
 ## Simulation
-(Simulation with BMP180 instead of BMP280 due to lack of sensor in Wokwi Library)
+(Simulation with BMP180 instead of BMP280
+due to lack of sensor in Wokwi Library)
 You can run the live simulation of this circuit on Wokwi here:
 https://wokwi.com/projects/455776933446111233
 

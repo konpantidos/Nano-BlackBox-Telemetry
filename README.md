@@ -29,4 +29,4 @@ The system logs the following data points:
 - [ ] Optimize SPI write speed for higher sampling rates.
 
 
-*Created by [Konstantinos Pantidos]*
+*Created by Konstantinos Pantidos*

@@ -35,5 +35,5 @@ You can run the live simulation of this circuit on Wokwi here:
 
 ## Files
 * `wokwi_diagram.json`: The simulation source file.
-* `circuit_layout.png`: A visual representation of the wiring.
+* `wokwi_circuit_layout.png`: A visual representation of the wiring.
 

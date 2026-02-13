@@ -16,7 +16,7 @@
 ### Phase 3: Advanced Engineering (DSP & Theory)
 - [x] **Sensor Calibration:** Implement scripts to calculate sensor bias (offsets) for the accelerometer and gyroscope.
 - [x] **Digital Signal Processing (DSP):** Implement a **Kalman Filter** in Python to fuse IMU and Barometric data.
-- [ ] **Theoretical Modeling:** Document flight physics including the barometric formula:
+- [x] **Theoretical Modeling:** Document flight physics including the barometric formula:
   $$P = P_0 \cdot \left(1 - \frac{L \cdot h}{T_0}\right)^{\frac{g \cdot M}{R \cdot L}}$$
  
 ### Phase 4: PCB Design & Manufacturing

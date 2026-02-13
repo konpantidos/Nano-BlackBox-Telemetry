@@ -6,9 +6,7 @@ To achieve high-fidelity altitude estimation, we implement a **Linear Kalman Fil
 - **MPU6050 (Accelerometer):** Extremely responsive to vertical movement but suffers from integration drift.
 
 ### The Solution: Kalman Filter
-We use a 1D Kalman Filter to fuse data from both sensors. The state vector is defined as:
-$$P = P_0 \cdot \left(1 - \frac{L \cdot h}{T_0}\right)^{\frac{g \cdot M}{R \cdot L}}$$
-where $h$ is altitude and $v$ is vertical velocity.
+We use a 1D Kalman Filter to fuse data from both sensors. 
 
 The algorithm follows two steps:
 1. **Prediction:** Uses the MPU6050's Z-axis acceleration to predict the next state.

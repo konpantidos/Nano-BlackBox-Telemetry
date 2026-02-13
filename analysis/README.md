@@ -21,6 +21,6 @@ The algorithm follows two steps:
 * `analysis_result.png`: Visualization of Raw vs. Filtered data.
 
 ## Results
-The image below shows how the Kalman Filter (red line) successfully tracks the flight path while filtering out the sensor noise (blue dots) from the BMP280.
+The image below shows how the Kalman Filter (red line) successfully tracks the flight path while filtering out the sensor noise from the BMP280.
 
 ![Analysis Result](analysis_result.png)

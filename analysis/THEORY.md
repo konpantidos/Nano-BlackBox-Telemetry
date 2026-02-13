@@ -33,17 +33,13 @@ The evolution of the system follows Newtonian kinematics.
 
 ### State Transition Matrix ($F$):
 Predicts the next state based on current altitude and velocity:
-$$
-F = \begin{bmatrix} 1 & \Delta t \\ 0 & 1 \end{bmatrix}
-$$
+
+$$F = \begin{bmatrix} 1 & \Delta t \\ 0 & 1 \end{bmatrix}$$
 
 ### Control Input Matrix ($B$):
-Relates the acceleration input ($a$) to the state change:
-$$
-B = \begin{bmatrix} \frac{1}{2}\Delta t^2 \\ \Delta t \end{bmatrix}
-$$
+Relates the vertical acceleration ($a$) to the state change:
 
----
+$$B = \begin{bmatrix} 0.5 \cdot \Delta t^2 \\ \Delta t \end{bmatrix}$$
 
 ## 3. Sensor Fusion via Linear Kalman Filter
 

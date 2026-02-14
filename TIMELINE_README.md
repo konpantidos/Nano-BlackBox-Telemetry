@@ -20,10 +20,10 @@
   $$P = P_0 \cdot \left(1 - \frac{L \cdot h}{T_0}\right)^{\frac{g \cdot M}{R \cdot L}}$$
  
 ### Phase 4: PCB Design & Manufacturing
-- [ ] **Schematic Entry:** Transfer the breadboard circuit to **EasyEDA/KiCad**.
-- [ ] **PCB Routing:** Design a compact, high-vibration resistant PCB layout.
-- [ ] **Fabrication:** Order custom PCBs (e.g., via JLCPCB/PCBWay).
-- [ ] **Soldering:** Final assembly of surface-mount or through-hole components.
+- [x] **Schematic Entry:** Transfer the breadboard circuit to **KiCad**.
+- [x] **PCB Routing:** Design a compact, high-vibration resistant PCB layout.
+- [x] **Fabrication:** Order custom PCBs .
+- [x] **Soldering:** Final assembly of surface-mount or through-hole components.
 
 ### Phase 5: Flight Integration & Launch
 - [ ] **System Integration:** Secure the BlackBox into the rocket airframe.

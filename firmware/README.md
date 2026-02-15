@@ -22,7 +22,7 @@ The computer automatically transitions between these states:
    * *Transition:* Altitude constant for `LANDING_TIMER` (5s).
 4. **LANDED:** Safe on ground. File saved/closed. (LED Off/Blinking fast).
 
-## 🛠 Dependencies
+## Dependencies
 To compile this code, install these libraries in Arduino IDE:
 * `Adafruit MPU6050`
 * `Adafruit BMP280`

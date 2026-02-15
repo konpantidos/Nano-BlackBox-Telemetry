@@ -45,7 +45,7 @@
 | **1. Simulation** | Circuit & Logic Test | Wokwi, GitHub | Proof of Concept & Virtual Validation |
 | **2. Prototyping** | Physical Build | Arduino IDE, Breadboard | Hardware-Software Integration |
 | **3. DSP & Math** | Noise Reduction | Python, Kalman Filter | Signal Integrity & Academic Depth |
-| **4. Manufacturing**| Hardware Hardening | EasyEDA, Soldering | Flight-Ready Professional Product |
+| **4. Manufacturing**| Hardware Hardening | KiCad, Soldering | Flight-Ready Professional Product |
 | **5. Launch** | Data Collection | Model Rocket, SD Logger | Real-World Performance Testing |
 | **6. Reporting** | Documentation | LaTeX, Markdown | Portfolio & Master's Admissions Prep |
 

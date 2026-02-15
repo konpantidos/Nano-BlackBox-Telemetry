@@ -7,107 +7,95 @@
  * Description: Logs 6-DOF IMU data and Barometric Altitude to CSV.
  */
 
-#include <Wire.h>
-#include <SPI.h>
-#include <SD.h>
-#include <Adafruit_MPU6050.h>
-#include <Adafruit_BMP280.h>
+#include "Config.h"
+#include "Sensors.h"
+#include "Storage.h"
 
-// --- PIN SETTINGS ---
-const int chipSelect = 10; // CS Pin for SD Card Module
+// --- Flight States ---
+enum FlightState {
+    STATE_IDLE,    // Waiting on pad
+    STATE_ASCENT,  // Powered flight / Coasting up
+    STATE_DESCENT, // Falling / Parachute
+    STATE_LANDED   // Safe on ground
+};
 
-// --- OBJECTS ---
-File logFile;
-Adafruit_MPU6050 mpu;
-Adafruit_BMP280 bmp; // I2C Interface
+FlightState currentState = STATE_IDLE;
+unsigned long lastLogTime = 0;
 
 void setup() {
-  Serial.begin(115200);
-  while (!Serial) delay(10); 
+    Serial.begin(115200);
+    Serial.println("\n--- NANO BLACKBOX BOOT ---");
 
-  Serial.println(F("\n--- FLIGHT RECORDER STARTING ---"));
+    pinMode(PIN_LED_STATUS, OUTPUT);
 
-  // 1. Initialize SD Card
-  Serial.print(F("Initializing SD card..."));
-  if (!SD.begin(chipSelect)) {
-    Serial.println(F("❌ FAILED!"));
-    while (1); 
-  }
-  Serial.println(F("✅ OK"));
-
-  logFile = SD.open("datalog.csv", FILE_WRITE);
-  if (logFile) {
-    if (logFile.size() == 0) {
-      logFile.println(F("Time(ms),AccelX,AccelY,AccelZ,GyroX,GyroY,GyroZ,Altitude(m),Temp(C)"));
-      Serial.println(F("✅ Header written to CSV"));
+    // Initialize Modules
+    initSensors();
+    calibrateSensors();
+    
+    // Try to initialize SD. If it fails, blink rapidly (Error code)
+    if (!initStorage()) {
+        while (1) {
+            digitalWrite(PIN_LED_STATUS, HIGH); delay(100);
+            digitalWrite(PIN_LED_STATUS, LOW);  delay(100);
+        }
     }
-    logFile.close();
-  } else {
-    Serial.println(F("❌ Error creating file!"));
-  }
 
-  // 2. Initialize MPU6050
-  Serial.print(F("Initializing MPU6050..."));
-  if (!mpu.begin()) {
-    Serial.println(F("❌ NOT FOUND!"));
-    while (1);
-  }
-  Serial.println(F("✅ OK"));
-
-  // 3. Initialize BMP280
-  Serial.print(F("Initializing BMP280..."));
-  if (!bmp.begin(0x76)) { 
-    Serial.println(F("❌ NOT FOUND!"));
-    while (1);
-  }
-  Serial.println(F("✅ OK"));
-  
-  Serial.println(F("🚀 SYSTEM READY! RECORDING..."));
-  delay(1000);
+    // Ready signal
+    digitalWrite(PIN_LED_STATUS, HIGH);
+    delay(1000);
+    digitalWrite(PIN_LED_STATUS, LOW);
 }
+
 void loop() {
-  // --- READ SENSORS ---
-  sensors_event_t a, g, temp;
-  mpu.getEvent(&a, &g, &temp);
-  
-  // Read Altitude (1013.25 is standard sea level pressure)
-  float altitude = bmp.readAltitude(1013.25); 
-  float temperature = bmp.readTemperature();
-  unsigned long currentTime = millis();
+    // 1. Read Data
+    FlightData data = readSensors();
 
-  // --- LOG TO SD CARD ---
-  logFile = SD.open("datalog.csv", FILE_WRITE);
-  
-  if (logFile) {
-    // Format: Time,Ax,Ay,Az,Gx,Gy,Gz,Alt,Temp
-    logFile.print(currentTime);
-    logFile.print(",");
-    logFile.print(a.acceleration.x);
-    logFile.print(",");
-    logFile.print(a.acceleration.y);
-    logFile.print(",");
-    logFile.print(a.acceleration.z);
-    logFile.print(",");
-    logFile.print(g.gyro.x);
-    logFile.print(",");
-    logFile.print(g.gyro.y);
-    logFile.print(",");
-    logFile.print(g.gyro.z);
-    logFile.print(",");
-    logFile.print(altitude);
-    logFile.print(",");
-    logFile.println(temperature);
-    
-    logFile.close(); // CRITICAL: Close to save data!
-    
-    // --- DEBUGGING (Serial Monitor) ---
-    Serial.print("T:"); Serial.print(currentTime);
-    Serial.print(" | Alt:"); Serial.print(altitude);
-    Serial.print(" | AccZ:"); Serial.println(a.acceleration.z);
-  } else {
-    Serial.println("❌ Error writing to SD!");
-  }
+    // 2. State Machine Logic
+    switch (currentState) {
+        case STATE_IDLE:
+            // Blink LED slowly (Heartbeat)
+            if (millis() % 1000 < 100) digitalWrite(PIN_LED_STATUS, HIGH);
+            else digitalWrite(PIN_LED_STATUS, LOW);
 
-  // Sampling Rate Control (approx. 30Hz)
-  delay(30); 
+            // Detect Launch: Acceleration > Threshold
+            if (data.az > LAUNCH_THRESHOLD) {
+                currentState = STATE_ASCENT;
+                Serial.println("[FSM] LAUNCH DETECTED! 🚀");
+                digitalWrite(PIN_LED_STATUS, HIGH); // Solid LED during flight
+            }
+            break;
+
+        case STATE_ASCENT:
+            // Log Data fast!
+            if (millis() - lastLogTime >= LOG_INTERVAL) {
+                logData(data);
+                lastLogTime = millis();
+            }
+
+            // Detect Apogee (simplified logic for now)
+            // If altitude starts dropping... (Needs logic later)
+            // For now, let's just simulate transition
+            // currentState = STATE_DESCENT; 
+            break;
+
+        case STATE_DESCENT:
+            // Continue logging
+            if (millis() - lastLogTime >= LOG_INTERVAL) {
+                logData(data);
+                lastLogTime = millis();
+            }
+            
+            // Detect Landing (Altitude constant)
+            // currentState = STATE_LANDED;
+            break;
+
+        case STATE_LANDED:
+            // Save file immediately
+            closeStorage();
+            
+            // Blink specific pattern to help locate rocket
+            if (millis() % 200 < 50) digitalWrite(PIN_LED_STATUS, HIGH);
+            else digitalWrite(PIN_LED_STATUS, LOW);
+            break;
+    }
 }

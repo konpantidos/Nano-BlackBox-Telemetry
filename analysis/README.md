@@ -5,14 +5,14 @@ This folder contains the Python tools used to process, visualize, and interpret 
 ## Contents
 * **`plot_data.py`**: The main Python script to generate flight graphs.
 * **`kalman_filter.py`**: Implementation of the sensor fusion algorithm.
-* **[`theory.md`](./theory.md)**: Detailed mathematical derivation of the physics formulas.
+* **[`THEORY.md`](./THEORY.md)**: Detailed mathematical derivation of the physics formulas.
 * **`flight_sample.csv`**: Sample dataset for testing.
 
 ---
 
 ## The Physics of Flight (Summary)
 To understand the rocket's performance, we analyze three key metrics.
-*(For the full mathematical breakdown, please refer to [`theory.md`](./theory.md))*
+*(For the full mathematical breakdown, please refer to [`THEORY.md`](./THEORY.md))*
 
 ### 1. Altitude Estimation ($h$)
 We calculate altitude using the barometric formula based on pressure ($P$) and temperature ($T$):
@@ -45,15 +45,3 @@ Prerequisites: Python 3 with `pandas`, `matplotlib`, and `numpy`.
 ### 1. Install Libraries
 ```bash
 pip install pandas matplotlib numpy.
-
-### 2. Run the Script
-Place your flight.csv in this folder and run:
-```bash
-python plot_data.py
-
-### 3. Output
-The script will generate:
-
-Raw Data Plot: Noisy sensor readings.
-
-Filtered Data Plot: The smooth curve produced by the Kalman Filter (Estimated Altitude & Velocity).

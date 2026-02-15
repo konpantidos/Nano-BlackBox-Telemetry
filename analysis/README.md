@@ -3,10 +3,9 @@
 This folder contains the Python tools used to process, visualize, and interpret the telemetry data recorded by the Nano BlackBox.
 
 ## Contents
-* **`plot_data.py`**: The main Python script to generate flight graphs.
-* **`kalman_filter.py`**: Implementation of the sensor fusion algorithm.
+* **`flight_analysis.py`**: The main Python script to generate flight graphs. Implementation of the sensor fusion algorithm.
 * **[`THEORY.md`](./THEORY.md)**: Detailed mathematical derivation of the physics formulas.
-* **`flight_sample.csv`**: Sample dataset for testing.
+* **`flight_log.csv`** + **`generate_test_data.py`** : Sample dataset for testing.
 
 ---
 

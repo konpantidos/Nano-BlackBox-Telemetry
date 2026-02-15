@@ -1,27 +1,29 @@
-# Firmware: Flight Recorder
+# Flight Computer Firmware
 
-This folder contains the Arduino source code for the rocket's Black Box.
+This folder contains the C++ source code for the Arduino Nano.
+The firmware is built using a **Modular Architecture** and a **Finite State Machine (FSM)**.
 
-## Requirements
-Before uploading, ensure you have the following libraries installed in your Arduino IDE:
-* **Adafruit MPU6050** (Motion sensing)
-* **Adafruit BMP085 Library** (Pressure & Altitude for BMP180)
-* **Adafruit Unified Sensor** (Base driver)
-* **SD** (Built-in)
+## Code Structure
+The code is split into logical modules for easier maintenance:
 
-## Arduino IDE Settings
-To avoid upload errors (especially with Nano clones), use these settings:
-* **Board:** Arduino Nano
-* **Processor:** ATmega328P (Old Bootloader)
-* **Port:** Select the COM port your Arduino is connected to.
+* **`flight_recorder.ino`**: The main entry point. Contains the `setup()`, `loop()`, and the State Machine logic.
+* **`Config.h`**: All settings (Pins, Thresholds, Timers) are defined here. **Edit this file to tune your rocket!**
+* **`Sensors.cpp/h`**: Handles communication with MPU6050 and BMP280.
+* **`Storage.cpp/h`**: Handles SD Card logging (CSV format).
 
-## Folder Structure
-* `FlightRecorder/`: Main firmware folder.
-  * `FlightRecorder.ino`: The code that runs on the rocket.
+## Flight Logic (State Machine)
+The computer automatically transitions between these states:
 
-## How to Upload
-1. Open `FlightRecorder.ino` in Arduino IDE.
-2. Install the required libraries via **Tools -> Manage Libraries**.
-3. Connect your Arduino Nano via USB.
-4. Press **Upload** (the arrow icon).
-5. Open **Serial Monitor** at **115200 baud** to verify the sensors are working.
+1. **IDLE:** Waiting on the pad. (LED Blinking slowly).
+   * *Transition:* Acceleration > `LAUNCH_THRESHOLD` (2G).
+2. **ASCENT:** Rocket is flying up. Logging data at max speed.
+   * *Transition:* Altitude decreases (Apogee detection).
+3. **DESCENT:** Rocket is falling under parachute.
+   * *Transition:* Altitude constant for `LANDING_TIMER` (5s).
+4. **LANDED:** Safe on ground. File saved/closed. (LED Off/Blinking fast).
+
+## 🛠 Dependencies
+To compile this code, install these libraries in Arduino IDE:
+* `Adafruit MPU6050`
+* `Adafruit BMP280`
+* `Adafruit Unified Sensor`

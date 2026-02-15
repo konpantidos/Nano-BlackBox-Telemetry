@@ -1,24 +1,59 @@
-## Theoretical Framework
-To achieve high-fidelity altitude estimation, we implement a **Linear Kalman Filter** for **Sensor Fusion**.
+# Flight Data Analysis & Physics
 
-### The Problem
-- **BMP280 (Barometer):** Provides absolute altitude but suffers from signal noise and atmospheric lag.
-- **MPU6050 (Accelerometer):** Extremely responsive to vertical movement but suffers from integration drift.
+This folder contains the Python tools used to process, visualize, and interpret the telemetry data recorded by the Nano BlackBox.
 
-### The Solution: Kalman Filter
-We use a 1D Kalman Filter to fuse data from both sensors. 
+## Contents
+* **`plot_data.py`**: The main Python script to generate flight graphs.
+* **`kalman_filter.py`**: Implementation of the sensor fusion algorithm.
+* **[`theory.md`](./theory.md)**: Detailed mathematical derivation of the physics formulas.
+* **`flight_sample.csv`**: Sample dataset for testing.
 
-The algorithm follows two steps:
-1. **Prediction:** Uses the MPU6050's Z-axis acceleration to predict the next state.
-2. **Correction:** Uses the BMP280's barometric altitude to correct the prediction.
+---
 
-## Files
-* `generate_test_data.py`: Script to generate synthetic flight data with Gaussian noise.
-* `flight_analysis.py`: Main analysis script implementing the Kalman Filter.
-* `flight_log.csv`: Sample flight data.
-* `analysis_result.png`: Visualization of Raw vs. Filtered data.
+## The Physics of Flight (Summary)
+To understand the rocket's performance, we analyze three key metrics.
+*(For the full mathematical breakdown, please refer to [`theory.md`](./theory.md))*
 
-## Results
-The image below shows how the Kalman Filter (red line) successfully tracks the flight path while filtering out the sensor noise from the BMP280.
+### 1. Altitude Estimation ($h$)
+We calculate altitude using the barometric formula based on pressure ($P$) and temperature ($T$):
+$$h = 44330 \cdot \left( 1 - \left( \frac{P}{P_0} \right)^{\frac{1}{5.255}} \right)$$
 
-![Analysis Result](analysis_result.png)
+### 2. Vertical Acceleration ($a_z$)
+Measured by the IMU in G-force.
+* **> 1g:** Thrust Phase (Liftoff).
+* **~ 0g:** Coasting (Freefall/Drag).
+* **Spikes:** Parachute deployment shock.
+
+---
+
+## Sensor Fusion: The Kalman Filter
+Raw sensor data is never perfect. To get a precise "Apogee" detection, we cannot rely on a single sensor. We use a **Kalman Filter** to fuse data.
+
+
+
+### Why do we need it?
+* **Accelerometers** are fast but suffer from high-frequency **noise** (vibration).
+* **Barometers** are smooth but suffer from **lag** and low resolution.
+
+The Kalman Filter combines these two inputs to predict the **True State** of the rocket, filtering out noise while maintaining speed.
+
+---
+
+## How to Run the Analysis
+Prerequisites: Python 3 with `pandas`, `matplotlib`, and `numpy`.
+
+### 1. Install Libraries
+```bash
+pip install pandas matplotlib numpy.
+
+### 2. Run the Script
+Place your flight.csv in this folder and run:
+```bash
+python plot_data.py
+
+### 3. Output
+The script will generate:
+
+Raw Data Plot: Noisy sensor readings.
+
+Filtered Data Plot: The smooth curve produced by the Kalman Filter (Estimated Altitude & Velocity).

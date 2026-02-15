@@ -1,32 +1,32 @@
 # Nano-BlackBox-Telemetry
-A low-cost, compact Flight Data Recorder (Black Box) for model rocketry and drones based on Arduino Nano. Logs 6-DOF IMU data and Barometric Altitude to a MicroSD card.
 
-# Arduino Flight Data Recorder (Black Box)
+**An Open Source, Arduino-based Flight Computer for Model Rocketry.**
+Designed to log high-speed telemetry (Acceleration, Gyro, Altitude) to an SD Card for post-flight analysis.
 
-## Overview
-This project is a custom-built **Flight Data Recorder** designed to log telemetry data for small-scale aerospace applications (Model Rockets, Drones, RC Planes). Built on the **Arduino Nano** platform, it functions as a "Black Box," capturing high-frequency sensor data to analyze flight performance and stability post-flight.
+![Project Render](docs/images/render.png)
 
-## Key Features
-* **High-Speed Logging:** Records data to a MicroSD card in `.CSV` format for easy analysis in Excel/Matlab.
-* **6-DOF IMU:** Uses the **MPU-6050** to track Acceleration (G-force) and Gyroscopic rotation (Roll/Pitch/Yaw).
-* **Altimeter:** Uses the **BMP280** for precise barometric altitude and temperature readings.
-* **Portable Power:** Powered by a standalone 9V battery for complete isolation from the vehicle's power system.
+## 🌟 Key Features
+* **Core:** Arduino Nano v3.0 (ATmega328P)
+* **IMU:** MPU6050 (6-DOF Gyro + Accelerometer)
+* **Barometer:** BMP280 (Altitude & Temperature)
+* **Storage:** MicroSD Card (SPI, CSV format)
+* **Logic:** Finite State Machine (Idle -> Ascent -> Descent -> Landed)
 
-## Hardware Manifest
-* **Microcontroller:** Arduino Nano V3 (ATmega328P / CH340)
-* **Inertial Measurement Unit (IMU):** GY-521 (MPU-6050)
-* **Barometer:** BMP280 (I2C Interface)
-* **Storage:** MicroSD Card Adapter Module (SPI Interface with LVC125A Level Shifter)
-* **Power Supply:** 9V Battery via VIN
+## 📂 Project Structure
+This repository is organized into modular folders:
 
-## Data Log Structure (CSV)
-The system logs the following data points:
-`Time(ms), Accel_X, Accel_Y, Accel_Z, Gyro_X, Gyro_Y, Gyro_Z, Altitude(m), Temp(C)`
+| Folder | Description |
+| :--- | :--- |
+| **[`/hardware`](./hardware)** | PCB Design files (KiCad 8.0), Schematics, and Gerbers. |
+| **[`/firmware`](./firmware)** | Source code for the Arduino Nano (C++). |
+| **[`/analysis`](./analysis)** | Python scripts to visualize flight data (Graphs). |
+| **[`/simulation`](./simulation)** | Wokwi simulation files for logic testing. |
+| **[`/docs`](./docs)** | Datasheets, Pinouts, and Assembly guides. |
 
-## Future Improvements
-- [ ] Implement Kalman Filter for altitude smoothing.
-- [ ] Add LED status indicators for "Recording" and "Error" states.
-- [ ] Optimize SPI write speed for higher sampling rates.
+## 🚀 Quick Start
+1. **Hardware:** Order the PCB using the Gerber files in `/hardware/gerbers`.
+2. **Firmware:** Open `/firmware/flight_recorder` in Arduino IDE and upload to Nano.
+3. **Analysis:** Run the Python scripts in `/analysis` to plot your `flight.csv`.
 
-
-*Created by Konstantinos Pantidos*
+## 📜 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

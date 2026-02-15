@@ -1,5 +1,3 @@
-// Code goes here
-
 /*
  * Project: Nano-BlackBox-Telemetry
  * Author: Konpantidos

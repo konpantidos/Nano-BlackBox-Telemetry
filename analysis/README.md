@@ -36,3 +36,27 @@ Raw sensor data is never perfect. To get a precise "Apogee" detection, we cannot
 
 The Kalman Filter combines these two inputs to predict the **True State** of the rocket, filtering out noise while maintaining speed.
 
+## How to Run the Analysis
+
+### 1. Install Libraries
+Open your terminal and run:
+
+```bash
+pip install pandas matplotlib numpy
+```
+
+### 2. Prepare the Data
+Place your recorded flight data file named `flight.csv` inside this folder (or ensure the script points to the correct path in `../data_logs/`).
+
+### 3. Execute the Script
+Run the python script:
+
+```bash
+python plot_data.py
+```
+
+## Expected Output
+The script will generate a visualization window comparing the raw sensor input against the processed data:
+
+* **Raw Data Plot:** Shows the noisy, unprocessed readings from the sensors.
+* **Filtered Data Plot:** Shows the smooth trajectory curve produced by the **Kalman Filter**.
